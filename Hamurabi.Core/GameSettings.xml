@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<game>
+  <options>
+    <years>10</years>
+    <bushels norm="20" />
+    <acres for-bushel="20" />
+  </options>
+</game>
