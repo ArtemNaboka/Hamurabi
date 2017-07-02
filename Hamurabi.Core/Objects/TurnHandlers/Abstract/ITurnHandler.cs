@@ -1,8 +1,10 @@
-﻿namespace Hamurabi.Core.Objects.TurnHandlers.Abstract
+﻿using Hamurabi.Core.Objects.Models;
+
+namespace Hamurabi.Core.Objects.TurnHandlers.Abstract
 {
     public interface ITurnHandler
     {
         void Initialize();
-        CityDomain HandleTurn(PlayerTurnModel model);
+        HandleResult HandleTurn(PlayerTurnModel model);
     }
 }

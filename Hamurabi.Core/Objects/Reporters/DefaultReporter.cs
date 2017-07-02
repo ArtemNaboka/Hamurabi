@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Text;
+using Hamurabi.Core.Objects.Models;
 using Hamurabi.Core.Objects.Reporters.Abstract;
 
 namespace Hamurabi.Core.Objects.Reporters
@@ -7,36 +8,28 @@ namespace Hamurabi.Core.Objects.Reporters
     public class DefaultReporter : IReporter
     {
         private readonly string _lineSeparator = Environment.NewLine;
-        private readonly CityDomain _cityDomain;
 
-        public DefaultReporter(CityDomain cityDomain, int year = 1)
+
+        public string GenerateYearReport(HandleResult result)
         {
-            _cityDomain = cityDomain;
-            _cityDomain.CurrentYear = year;
-        }
+            var reportSb = new StringBuilder(
+                $"I beg to report you about {result.CityDomain.CurrentYear} year:{_lineSeparator}");
 
-
-        public void SetCurrentYear(int year)
-        {
-            if (year <= 0)
+            if (result.IsGameOver)
             {
-                throw new ArgumentOutOfRangeException(nameof(year), "Year must be more than zero.");
+
             }
-
-            _cityDomain.CurrentYear = year;
-        }
-
-
-        public void IncrementYear()
-        {
-            _cityDomain.CurrentYear++;
-        }
-
-
-        public string GenerateYearReport()
-        {
-            var reportSb = new StringBuilder($"I beg to report you about {_cityDomain.CurrentYear} year:{_lineSeparator}");
-
+            else
+            {
+                reportSb
+                    .Append(GetStarvedPeopleReport(result.CityDomain.StarvedPeople))
+                    .Append(GetPeopleComeToCityReport(result.CityDomain.ComingInCurrentYearPeople))
+                    .Append(GetCityPopulationReport(result.CityDomain.AlivePeople))
+                    .Append(GetRatsReport(result.CityDomain.EatenByRats))
+                    .Append(GetHarvestedBushelsReport())
+                    .Append(GetBushelsInStoreReport(result.CityDomain.BushelsCount))
+                    .Append(GetLandCostReport(result.CityDomain.AcrCost));
+            }
 
             return reportSb.ToString();
         }
@@ -46,43 +39,43 @@ namespace Hamurabi.Core.Objects.Reporters
         
         private string GetStarvedPeopleReport(int starvedCount)
         {
-            return $"{starvedCount} people starved";
+            return $"{starvedCount} people starved{_lineSeparator}";
         }
 
 
         private string GetPeopleComeToCityReport(int comingPeopleCount)
         {
-            return $"{comingPeopleCount} people came to the city";
+            return $"{comingPeopleCount} people came to the city{_lineSeparator}";
         }
 
 
         private string GetCityPopulationReport(int population)
         {
-            return $"The city population is now {population}";
+            return $"The city population is now {population}{_lineSeparator}";
         }
 
 
         private string GetRatsReport(int eatenBushelsCount)
         {
-            return $"Rats ate {eatenBushelsCount} bushels";
+            return $"Rats ate {eatenBushelsCount} bushels{_lineSeparator}";
         }
 
 
         private string GetHarvestedBushelsReport(int bushelsPerAcr)
         {
-            return $"You harvested {bushelsPerAcr} bushels per acre";
+            return $"You harvested {bushelsPerAcr} bushels per acre{_lineSeparator}";
         }
 
 
         private string GetBushelsInStoreReport(int bushelsCount)
         {
-            return $"You now have {bushelsCount} bushels in store";
+            return $"You now have {bushelsCount} bushels in store{_lineSeparator}";
         }
 
 
         private string GetLandCostReport(int bushelsPerAcr)
         {
-            return $"Land is trading at {bushelsPerAcr} bushels per acre";
+            return $"Land is trading at {bushelsPerAcr} bushels per acre{_lineSeparator}";
         }
 
         #endregion

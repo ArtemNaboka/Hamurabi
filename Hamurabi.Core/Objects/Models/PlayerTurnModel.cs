@@ -1,4 +1,4 @@
-﻿namespace Hamurabi.Core.Objects
+﻿namespace Hamurabi.Core.Objects.Models
 {
     public class PlayerTurnModel
     {

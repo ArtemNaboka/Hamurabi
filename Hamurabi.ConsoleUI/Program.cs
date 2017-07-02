@@ -1,5 +1,4 @@
-﻿using System;
-using Hamurabi.Core.Objects.TurnHandlers;
+﻿using Hamurabi.Core.Objects.TurnHandlers;
 
 namespace Hamurabi.ConsoleUI
 {

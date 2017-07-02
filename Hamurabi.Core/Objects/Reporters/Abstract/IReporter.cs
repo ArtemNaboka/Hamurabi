@@ -1,7 +1,9 @@
-﻿namespace Hamurabi.Core.Objects.Reporters.Abstract
+﻿using Hamurabi.Core.Objects.Models;
+
+namespace Hamurabi.Core.Objects.Reporters.Abstract
 {
     public interface IReporter
     {
-        string GenerateYearReport();
+        string GenerateYearReport(HandleResult result);
     }
 }

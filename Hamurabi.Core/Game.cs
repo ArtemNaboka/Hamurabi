@@ -1,22 +1,24 @@
-﻿namespace Hamurabi.Core
+﻿using Hamurabi.Core.Objects.Reporters.Abstract;
+using Hamurabi.Core.Objects.TurnHandlers;
+using Hamurabi.Core.Objects.TurnHandlers.Abstract;
+
+namespace Hamurabi.Core
 {
     public class Game
     {
+        private readonly ITurnHandler _turnHandler;
+        private readonly IReporter _reporter;
+
+
         public Game()
         {
-            Initialize();
+            _turnHandler = new DefaultTurnHandler();
         }
 
 
         public void Start()
         {
-            
-        }
-
-
-        private static void Initialize()
-        {
-            
+            _turnHandler.Initialize();
         }
     }
 }

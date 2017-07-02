@@ -7,6 +7,7 @@ namespace Hamurabi.Core.Objects
         public int BushelsCount { get; set; }
         public int AcresCount { get; set; }
         public int AlivePeople { get; set; }
+        public int ComingInCurrentYearPeople { get; set; }
         public int StarvedPeople { get; set; }
         public int AcrCost { get; set; }
         public int EatenByRats { get; set; }
