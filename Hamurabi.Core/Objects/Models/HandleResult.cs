@@ -1,8 +1,9 @@
 ﻿namespace Hamurabi.Core.Objects.Models
 {
     public class HandleResult
-    {
+    {        
+        public TurnHandleResult TurnHandleResult { get; set; }
         public CityDomain CityDomain { get; set; }
-        public bool IsGameOver { get; set; }
+        public ValidationResultModel ValidationResult { get; set; }
     }
 }

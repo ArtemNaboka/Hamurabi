@@ -15,23 +15,39 @@ namespace Hamurabi.Core.Objects.Reporters
             var reportSb = new StringBuilder(
                 $"I beg to report you about {result.CityDomain.CurrentYear} year:{_lineSeparator}");
 
-            if (result.IsGameOver)
-            {
-
-            }
-            else
+            if (result.TurnHandleResult == TurnHandleResult.GameOver)
             {
                 reportSb
-                    .Append(GetStarvedPeopleReport(result.CityDomain.StarvedPeople))
-                    .Append(GetPeopleComeToCityReport(result.CityDomain.ComingInCurrentYearPeople))
-                    .Append(GetCityPopulationReport(result.CityDomain.AlivePeople))
-                    .Append(GetRatsReport(result.CityDomain.EatenByRats))
-                    .Append(GetHarvestedBushelsReport())
-                    .Append(GetBushelsInStoreReport(result.CityDomain.BushelsCount))
-                    .Append(GetLandCostReport(result.CityDomain.AcrCost));
+                    .Append("Game over!!!")
+                    .Append(_lineSeparator);
+
+                if (AreAllPeopleStarved(result.CityDomain))
+                {
+                    reportSb
+                        .Append("You starved all your people!!")
+                        .Append(_lineSeparator);
+
+                    return reportSb.ToString();
+                }
             }
+            
+            reportSb
+                .Append(GetStarvedPeopleReport(result.CityDomain.StarvedPeople))
+                .Append(GetPeopleComeToCityReport(result.CityDomain.ComingInCurrentYearPeople))
+                .Append(GetCityPopulationReport(result.CityDomain.AlivePeople))
+                .Append(GetRatsReport(result.CityDomain.EatenByRats))
+                .Append(GetHarvestedBushelsReport(result.CityDomain.HarvestedBushelsCount))
+                .Append(GetBushelsInStoreReport(result.CityDomain.BushelsCount))
+                .Append(GetLandCostReport(result.CityDomain.AcrCost));
+            
 
             return reportSb.ToString();
+        }
+
+
+        private bool AreAllPeopleStarved(CityDomain cityDomain)
+        {
+            return cityDomain.AlivePeople <= 0;
         }
 
 

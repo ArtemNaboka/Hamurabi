@@ -5,6 +5,7 @@ namespace Hamurabi.Core.Objects
     public class CityDomain
     {
         public int BushelsCount { get; set; }
+        public int HarvestedBushelsCount { get; set; }
         public int AcresCount { get; set; }
         public int AlivePeople { get; set; }
         public int ComingInCurrentYearPeople { get; set; }

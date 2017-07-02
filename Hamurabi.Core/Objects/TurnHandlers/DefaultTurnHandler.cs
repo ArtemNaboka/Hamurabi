@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
 using Hamurabi.Core.Objects.Models;
 using Hamurabi.Core.Objects.TurnHandlers.Abstract;
+using Hamurabi.Core.Objects.Validators.Abstract;
 
 namespace Hamurabi.Core.Objects.TurnHandlers
 {
@@ -16,6 +17,13 @@ namespace Hamurabi.Core.Objects.TurnHandlers
         private int _currentYear;
         
         private CityDomain _cityDomain;
+        private readonly IValidator _validator;
+
+
+        public DefaultTurnHandler(IValidator validator)
+        {
+            _validator = validator;
+        }
 
 
         public void Initialize()
@@ -33,6 +41,17 @@ namespace Hamurabi.Core.Objects.TurnHandlers
 
         public HandleResult HandleTurn(PlayerTurnModel model)
         {
+            var validationResult = _validator.Validate(_cityDomain, model);
+            if (validationResult.HasErrors)
+            {
+                return new HandleResult
+                {
+                    TurnHandleResult = TurnHandleResult.ValidationError,
+                    ValidationResult = validationResult
+                };
+            }
+
+
             _currentYear = ++_cityDomain.CurrentYear;
             _cityDomain.AcresCount -= model.AcrChange;
 
@@ -50,16 +69,19 @@ namespace Hamurabi.Core.Objects.TurnHandlers
                                                                                                     : eatenByRatsPercent));
 
             _cityDomain.BushelsCount -= _cityDomain.EatenByRats + model.AcresToPlant + model.BushelsToFeed;
-            _cityDomain.BushelsCount += _cityDomain.BushelsCount < 3000
+            _cityDomain.HarvestedBushelsCount = _cityDomain.BushelsCount < 3000
                                         ? GameRandom.Next(1, 6) * model.AcresToPlant
                                         : _cityDomain.AcresCount;
 
+            _cityDomain.BushelsCount += _cityDomain.HarvestedBushelsCount + model.AcrChange * _cityDomain.AcrCost;
 
 
             return new HandleResult
             {
                 CityDomain = _cityDomain.Clone(),
-                IsGameOver = _currentYear > _maxYears || _cityDomain.AlivePeople <= 0
+                TurnHandleResult = _currentYear > _maxYears || _cityDomain.AlivePeople <= 0
+                                    ? TurnHandleResult.GameOver
+                                    : TurnHandleResult.Succeed
             };
         }
 

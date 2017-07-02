@@ -4,4 +4,8 @@
     <years>10</years>
     <bushels norm="20" />
   </options>
+  
+  <initial bushelsCount="2800" currentYear="1" harvestedBushels="0"
+           acresCount="1000" cityPopulation="100" comingPeople="5"
+           eatenByRats="200" harvestedPerAcr="3" arcCost="19" />
 </game>
