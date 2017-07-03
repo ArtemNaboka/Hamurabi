@@ -61,17 +61,20 @@ namespace Hamurabi.Core.Objects.TurnHandlers
 
             _cityDomain.AcrCost = GameRandom.Next(16, 26);
 
-            var eatenByRatsPercent = GameRandom.NextDouble();
-            _cityDomain.EatenByRats = (int)(_cityDomain.BushelsCount * (eatenByRatsPercent >= 0.6
-                                                                        ? eatenByRatsPercent - 0.3
-                                                                        : eatenByRatsPercent));
 
-            _cityDomain.BushelsCount -= _cityDomain.EatenByRats + model.AcresToPlant + model.BushelsToFeed;
+            _cityDomain.BushelsCount -= model.AcresToPlant + model.BushelsToFeed;
             _cityDomain.HarvestedBushelsCount = _cityDomain.BushelsCount < 3000
                                         ? GameRandom.Next(1, 6) * model.AcresToPlant
                                         : _cityDomain.AcresCount;
 
             _cityDomain.BushelsCount += _cityDomain.HarvestedBushelsCount - model.AcrChange * _cityDomain.AcrCost;
+
+            var eatenByRatsPercent = GameRandom.NextDouble();
+
+            _cityDomain.EatenByRats = (int)(_cityDomain.BushelsCount * (eatenByRatsPercent >= 0.6
+                                                                        ? eatenByRatsPercent - 0.3
+                                                                        : eatenByRatsPercent));
+            _cityDomain.BushelsCount -= _cityDomain.EatenByRats;
 
 
             return new HandleResult
