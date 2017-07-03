@@ -51,7 +51,7 @@ namespace Hamurabi.Core.Objects.TurnHandlers
 
 
             _currentYear = ++_cityDomain.CurrentYear;
-            _cityDomain.AcresCount -= model.AcrChange;
+            _cityDomain.AcresCount += model.AcrChange;
 
             var fedPeopleCount = model.BushelsToFeed / _normFoodForPerson;
             _cityDomain.StarvedPeople = _cityDomain.AlivePeople - fedPeopleCount;
@@ -62,16 +62,16 @@ namespace Hamurabi.Core.Objects.TurnHandlers
             _cityDomain.AcrCost = GameRandom.Next(16, 26);
 
             var eatenByRatsPercent = GameRandom.NextDouble();
-            _cityDomain.EatenByRats = _cityDomain.BushelsCount - (int)(_cityDomain.BushelsCount * (eatenByRatsPercent >= 0.6
-                                                                                                    ? eatenByRatsPercent - 0.3
-                                                                                                    : eatenByRatsPercent));
+            _cityDomain.EatenByRats = (int)(_cityDomain.BushelsCount * (eatenByRatsPercent >= 0.6
+                                                                        ? eatenByRatsPercent - 0.3
+                                                                        : eatenByRatsPercent));
 
             _cityDomain.BushelsCount -= _cityDomain.EatenByRats + model.AcresToPlant + model.BushelsToFeed;
             _cityDomain.HarvestedBushelsCount = _cityDomain.BushelsCount < 3000
                                         ? GameRandom.Next(1, 6) * model.AcresToPlant
                                         : _cityDomain.AcresCount;
 
-            _cityDomain.BushelsCount += _cityDomain.HarvestedBushelsCount + model.AcrChange * _cityDomain.AcrCost;
+            _cityDomain.BushelsCount += _cityDomain.HarvestedBushelsCount - model.AcrChange * _cityDomain.AcrCost;
 
 
             return new HandleResult
@@ -107,7 +107,6 @@ namespace Hamurabi.Core.Objects.TurnHandlers
                 HarvestedBushelsCount = Convert.ToInt32(xInitial.Attribute("harvestedPerAcr").Value),
                 StarvedPeople = Convert.ToInt32(xInitial.Attribute("starvedPeople").Value)
             };
-
         }
     }
 }
