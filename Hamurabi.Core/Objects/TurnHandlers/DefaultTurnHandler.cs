@@ -53,13 +53,24 @@ namespace Hamurabi.Core.Objects.TurnHandlers
             _currentYear = ++_cityDomain.CurrentYear;
             _cityDomain.AcresCount += model.AcrChange;
 
-            _cityDomain.ComingInCurrentYearPeople += GameRandom.Next(2, 11);
-            _cityDomain.AlivePeople += _cityDomain.ComingInCurrentYearPeople;
+            
 
             var fedPeopleCount = model.BushelsToFeed / _normFoodForPerson;
             _cityDomain.StarvedPeople = _cityDomain.AlivePeople - fedPeopleCount;          
             _cityDomain.AlivePeople -= _cityDomain.StarvedPeople;
-            
+
+            if (_cityDomain.AlivePeople <= _cityDomain.StarvedPeople)
+            {
+                return new HandleResult
+                {
+                    TurnHandleResult = TurnHandleResult.GameOver,
+                    CityDomain = _cityDomain.Clone()
+                };
+            }
+
+            _cityDomain.ComingInCurrentYearPeople = GameRandom.Next(2, 11);
+            _cityDomain.AlivePeople += _cityDomain.ComingInCurrentYearPeople;
+
 
             _cityDomain.AcrCost = GameRandom.Next(16, 26);
 

@@ -35,6 +35,7 @@ namespace Hamurabi.ConsoleUI
                 if (result.TurnHandleResult == TurnHandleResult.ValidationError)
                 {
                     Console.WriteLine(result.ValidationErrorMessage);
+                    continue;
                 }
 
                 Console.WriteLine(result.Report);

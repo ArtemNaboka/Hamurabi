@@ -23,7 +23,7 @@ namespace Hamurabi.Core.Objects.Reporters
                 if (AreAllPeopleStarved(result.CityDomain))
                 {
                     reportSb
-                        .Append("You starved all your people!!")
+                        .Append("You starved so much your people!!")
                         .Append(_lineSeparator);
 
                     return reportSb.ToString();
@@ -61,7 +61,7 @@ namespace Hamurabi.Core.Objects.Reporters
 
         private bool AreAllPeopleStarved(CityDomain cityDomain)
         {
-            return cityDomain.AlivePeople <= 0;
+            return cityDomain.AlivePeople <= cityDomain.StarvedPeople;
         }
 
 
