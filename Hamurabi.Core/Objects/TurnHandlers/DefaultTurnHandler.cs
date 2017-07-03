@@ -15,8 +15,9 @@ namespace Hamurabi.Core.Objects.TurnHandlers
         private int _normFoodForPerson;
         private int _maxYears;
         private int _currentYear;
-        
+
         private CityDomain _cityDomain;
+        private CityDomain _initialCityDomain;
         private readonly IValidator _validator;
 
 
@@ -32,10 +33,7 @@ namespace Hamurabi.Core.Objects.TurnHandlers
 
             _currentYear = 1;
 
-            _cityDomain = new CityDomain
-            {
-                CurrentYear = 1
-            };
+            _cityDomain = _initialCityDomain.Clone();
         }
 
 
@@ -64,7 +62,7 @@ namespace Hamurabi.Core.Objects.TurnHandlers
             _cityDomain.AcrCost = GameRandom.Next(16, 26);
 
             var eatenByRatsPercent = GameRandom.NextDouble();
-            _cityDomain.EatenByRats = _cityDomain.BushelsCount - (int)(_cityDomain.BushelsCount * (eatenByRatsPercent >= 0.6 
+            _cityDomain.EatenByRats = _cityDomain.BushelsCount - (int)(_cityDomain.BushelsCount * (eatenByRatsPercent >= 0.6
                                                                                                     ? eatenByRatsPercent - 0.3
                                                                                                     : eatenByRatsPercent));
 
@@ -94,6 +92,22 @@ namespace Hamurabi.Core.Objects.TurnHandlers
 
             _maxYears = Convert.ToInt32(xSettings.Element("years").Value);
             _normFoodForPerson = Convert.ToInt32(xSettings.Element("bushels").Attribute("norm").Value);
+
+
+            var xInitial = xDoc.Element("game").Element("initial");
+            _initialCityDomain = new CityDomain
+            {
+                AlivePeople = Convert.ToInt32(xInitial.Attribute("cityPopulation").Value),
+                AcrCost = Convert.ToInt32(xInitial.Attribute("acrCost").Value),
+                AcresCount = Convert.ToInt32(xInitial.Attribute("acresCount").Value),
+                BushelsCount = Convert.ToInt32(xInitial.Attribute("bushelsCount").Value),
+                ComingInCurrentYearPeople = Convert.ToInt32(xInitial.Attribute("comingPeople").Value),
+                CurrentYear = Convert.ToInt32(xInitial.Attribute("currentYear").Value),
+                EatenByRats = Convert.ToInt32(xInitial.Attribute("eatenByRats").Value),
+                HarvestedBushelsCount = Convert.ToInt32(xInitial.Attribute("harvestedPerAcr").Value),
+                StarvedPeople = Convert.ToInt32(xInitial.Attribute("starvedPeople").Value)
+            };
+
         }
     }
 }

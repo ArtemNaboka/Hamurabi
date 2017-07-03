@@ -7,5 +7,5 @@
   
   <initial bushelsCount="2800" currentYear="1" harvestedBushels="0"
            acresCount="1000" cityPopulation="100" comingPeople="5"
-           eatenByRats="200" harvestedPerAcr="3" arcCost="19" />
+           eatenByRats="200" harvestedPerAcr="3" arcCost="19" starvedPeople="0" />
 </game>
