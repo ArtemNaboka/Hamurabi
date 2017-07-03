@@ -9,7 +9,6 @@ namespace Hamurabi.Core.Objects.TurnHandlers
 {
     public class DefaultTurnHandler : ITurnHandler
     {
-        private const string SettingsPath = @"../Hamurabi.Core/GameSettings.xml";
         private static readonly Random GameRandom = new Random();
 
         private int _normFoodForPerson;
@@ -17,7 +16,6 @@ namespace Hamurabi.Core.Objects.TurnHandlers
         private int _currentYear;
 
         private CityDomain _cityDomain;
-        private CityDomain _initialCityDomain;
         private readonly IValidator _validator;
 
 
@@ -32,8 +30,6 @@ namespace Hamurabi.Core.Objects.TurnHandlers
             InitializeFromXml();
 
             _currentYear = 1;
-
-            _cityDomain = _initialCityDomain.Clone();
         }
 
 
@@ -64,7 +60,8 @@ namespace Hamurabi.Core.Objects.TurnHandlers
                 return new HandleResult
                 {
                     TurnHandleResult = TurnHandleResult.GameOver,
-                    CityDomain = _cityDomain.Clone()
+                    CityDomain = _cityDomain.Clone(),
+                    GameOverCause = GameOverCause.PeopleDead
                 };
             }
 
@@ -91,42 +88,31 @@ namespace Hamurabi.Core.Objects.TurnHandlers
             _cityDomain.BushelsCount -= _cityDomain.EatenByRats;
 
 
-            return new HandleResult
+            var result = new HandleResult
             {
                 CityDomain = _cityDomain.Clone(),
-                TurnHandleResult = _currentYear > _maxYears || _cityDomain.AlivePeople <= 0
+                TurnHandleResult = _currentYear > _maxYears
                                     ? TurnHandleResult.GameOver
-                                    : TurnHandleResult.Succeed
+                                    : TurnHandleResult.Succeed,
             };
+
+            result.GameOverCause = result.TurnHandleResult == TurnHandleResult.GameOver
+                                    ? GameOverCause.CameLastYear
+                                    : GameOverCause.None;
+            return result;
         }
-
-
-        public CityDomain InitialDomain => _initialCityDomain.Clone();
 
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
         private void InitializeFromXml()
         {
-            var xDoc = XDocument.Load(SettingsPath);
+            var xDoc = XDocument.Load(StringConstants.SettingsPath);
             var xSettings = xDoc.Element("game")?.Element("options");
 
             _maxYears = Convert.ToInt32(xSettings.Element("years").Value);
             _normFoodForPerson = Convert.ToInt32(xSettings.Element("bushels").Attribute("norm").Value);
 
-
-            var xInitial = xDoc.Element("game").Element("initial");
-            _initialCityDomain = new CityDomain
-            {
-                AlivePeople = Convert.ToInt32(xInitial.Attribute("cityPopulation").Value),
-                AcrCost = Convert.ToInt32(xInitial.Attribute("acrCost").Value),
-                AcresCount = Convert.ToInt32(xInitial.Attribute("acresCount").Value),
-                BushelsCount = Convert.ToInt32(xInitial.Attribute("bushelsCount").Value),
-                ComingInCurrentYearPeople = Convert.ToInt32(xInitial.Attribute("comingPeople").Value),
-                CurrentYear = Convert.ToInt32(xInitial.Attribute("currentYear").Value),
-                EatenByRats = Convert.ToInt32(xInitial.Attribute("eatenByRats").Value),
-                HarvestedBushelsPerAcr = Convert.ToInt32(xInitial.Attribute("harvestedPerAcr").Value),
-                StarvedPeople = Convert.ToInt32(xInitial.Attribute("starvedPeople").Value)
-            };
+            _cityDomain = XmlGameInitializer.GetInitialCityDomain();
         }
     }
 }

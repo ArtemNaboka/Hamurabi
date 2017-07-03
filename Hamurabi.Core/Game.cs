@@ -1,4 +1,5 @@
-﻿using Hamurabi.Core.Objects.Models;
+﻿using Hamurabi.Core.Objects.Analysis;
+using Hamurabi.Core.Objects.Models;
 using Hamurabi.Core.Objects.Reporters;
 using Hamurabi.Core.Objects.Reporters.Abstract;
 using Hamurabi.Core.Objects.TurnHandlers;
@@ -19,7 +20,7 @@ namespace Hamurabi.Core
             // внедрения зависимостей, но так как приложение
             // учебное, то объекты создаются явно
             _turnHandler = new DefaultTurnHandler(new TurnValidator());
-            _reporter = new DefaultReporter();
+            _reporter = new DefaultReporter(new DefaultGameOverAnalyst());
         }
 
 
@@ -31,7 +32,7 @@ namespace Hamurabi.Core
 
         public string GetInitialReport()
         {
-            return _reporter.GetDomainInfo(_turnHandler.InitialDomain);
+            return _reporter.GetInitialDomainInfo();
         }
 
 
