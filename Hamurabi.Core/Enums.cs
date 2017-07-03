@@ -6,4 +6,12 @@
         Succeed,
         GameOver
     }
+
+
+    public enum GameOverCause
+    {
+        None,
+        PeopleDead,
+        CameLastYear
+    }
 }
