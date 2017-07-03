@@ -12,8 +12,7 @@ namespace Hamurabi.Core.Objects.Reporters
 
         public string GenerateYearReport(HandleResult result)
         {
-            var reportSb = new StringBuilder(
-                $"I beg to report you about {result.CityDomain.CurrentYear} year:{_lineSeparator}");
+            var reportSb = new StringBuilder();                          
 
             if (result.TurnHandleResult == TurnHandleResult.GameOver)
             {
@@ -30,18 +29,33 @@ namespace Hamurabi.Core.Objects.Reporters
                     return reportSb.ToString();
                 }
             }
-            
-            reportSb
-                .Append(GetStarvedPeopleReport(result.CityDomain.StarvedPeople))
-                .Append(GetPeopleComeToCityReport(result.CityDomain.ComingInCurrentYearPeople))
-                .Append(GetCityPopulationReport(result.CityDomain.AlivePeople))
-                .Append(GetRatsReport(result.CityDomain.EatenByRats))
-                .Append(GetHarvestedBushelsReport(result.CityDomain.HarvestedBushelsPerAcr))
-                .Append(GetBushelsInStoreReport(result.CityDomain.BushelsCount))
-                .Append(GetLandCostReport(result.CityDomain.AcrCost));
+
+            reportSb.Append(GetDomainInfo(result.CityDomain));
             
 
             return reportSb.ToString();
+        }
+
+
+        public string GetDomainInfo(CityDomain domain)
+        {
+            var domainSb = new StringBuilder();
+
+            domainSb
+                .Append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .Append(_lineSeparator)
+                .Append($"I beg to report you about {domain.CurrentYear} year:{_lineSeparator}")
+                .Append(GetStarvedPeopleReport(domain.StarvedPeople))
+                .Append(GetPeopleComeToCityReport(domain.ComingInCurrentYearPeople))
+                .Append(GetCityPopulationReport(domain.AlivePeople))
+                .Append(GetRatsReport(domain.EatenByRats))
+                .Append(GetHarvestedBushelsReport(domain.HarvestedBushelsPerAcr))
+                .Append(GetBushelsInStoreReport(domain.BushelsCount))
+                .Append(GetLandCostReport(domain.AcrCost))
+                .Append("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+                .Append(_lineSeparator);
+
+            return domainSb.ToString();
         }
 
 
@@ -52,7 +66,7 @@ namespace Hamurabi.Core.Objects.Reporters
 
 
         #region Separate reports
-        
+
         private string GetStarvedPeopleReport(int starvedCount)
         {
             return $"{starvedCount} people starved{_lineSeparator}";

@@ -53,11 +53,13 @@ namespace Hamurabi.Core.Objects.TurnHandlers
             _currentYear = ++_cityDomain.CurrentYear;
             _cityDomain.AcresCount += model.AcrChange;
 
-            var fedPeopleCount = model.BushelsToFeed / _normFoodForPerson;
-            _cityDomain.StarvedPeople = _cityDomain.AlivePeople - fedPeopleCount;
             _cityDomain.ComingInCurrentYearPeople += GameRandom.Next(2, 11);
-            _cityDomain.AlivePeople -= _cityDomain.StarvedPeople;
             _cityDomain.AlivePeople += _cityDomain.ComingInCurrentYearPeople;
+
+            var fedPeopleCount = model.BushelsToFeed / _normFoodForPerson;
+            _cityDomain.StarvedPeople = _cityDomain.AlivePeople - fedPeopleCount;          
+            _cityDomain.AlivePeople -= _cityDomain.StarvedPeople;
+            
 
             _cityDomain.AcrCost = GameRandom.Next(16, 26);
 
@@ -86,6 +88,9 @@ namespace Hamurabi.Core.Objects.TurnHandlers
                                     : TurnHandleResult.Succeed
             };
         }
+
+
+        public CityDomain InitialDomain => _initialCityDomain.Clone();
 
 
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]

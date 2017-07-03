@@ -4,6 +4,7 @@ namespace Hamurabi.Core.Objects.Reporters.Abstract
 {
     public interface IReporter
     {
+        string GetDomainInfo(CityDomain domain);
         string GenerateYearReport(HandleResult result);
     }
 }
