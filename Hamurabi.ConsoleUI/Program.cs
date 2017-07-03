@@ -30,8 +30,17 @@ namespace Hamurabi.ConsoleUI
                 };
 
                 result = game.MakeTurn(turnModel);
-                
+
+                if (result.TurnHandleResult == TurnHandleResult.ValidationError)
+                {
+                    Console.WriteLine(result.ValidationErrorMessage);
+                }
+
                 Console.WriteLine(result.Report);
+                if (result.TurnHandleResult == TurnHandleResult.GameOver)
+                {
+                    break;
+                }
             } while (result.TurnHandleResult != TurnHandleResult.GameOver);
         }
     }

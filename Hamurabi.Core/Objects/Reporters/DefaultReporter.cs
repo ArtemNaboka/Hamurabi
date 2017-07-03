@@ -36,7 +36,7 @@ namespace Hamurabi.Core.Objects.Reporters
                 .Append(GetPeopleComeToCityReport(result.CityDomain.ComingInCurrentYearPeople))
                 .Append(GetCityPopulationReport(result.CityDomain.AlivePeople))
                 .Append(GetRatsReport(result.CityDomain.EatenByRats))
-                .Append(GetHarvestedBushelsReport(result.CityDomain.HarvestedBushelsCount))
+                .Append(GetHarvestedBushelsReport(result.CityDomain.HarvestedBushelsPerAcr))
                 .Append(GetBushelsInStoreReport(result.CityDomain.BushelsCount))
                 .Append(GetLandCostReport(result.CityDomain.AcrCost));
             

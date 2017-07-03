@@ -63,11 +63,12 @@ namespace Hamurabi.Core.Objects.TurnHandlers
 
 
             _cityDomain.BushelsCount -= model.AcresToPlant + model.BushelsToFeed;
-            _cityDomain.HarvestedBushelsCount = _cityDomain.BushelsCount < 3000
-                                        ? GameRandom.Next(1, 6) * model.AcresToPlant
-                                        : _cityDomain.AcresCount;
+            _cityDomain.HarvestedBushelsPerAcr = _cityDomain.BushelsCount < 3000
+                                                ? GameRandom.Next(1, 6)
+                                                : 1;
 
-            _cityDomain.BushelsCount += _cityDomain.HarvestedBushelsCount - model.AcrChange * _cityDomain.AcrCost;
+            _cityDomain.BushelsCount += _cityDomain.HarvestedBushelsPerAcr * model.AcresToPlant
+                                            - model.AcrChange * _cityDomain.AcrCost;
 
             var eatenByRatsPercent = GameRandom.NextDouble();
 
@@ -107,7 +108,7 @@ namespace Hamurabi.Core.Objects.TurnHandlers
                 ComingInCurrentYearPeople = Convert.ToInt32(xInitial.Attribute("comingPeople").Value),
                 CurrentYear = Convert.ToInt32(xInitial.Attribute("currentYear").Value),
                 EatenByRats = Convert.ToInt32(xInitial.Attribute("eatenByRats").Value),
-                HarvestedBushelsCount = Convert.ToInt32(xInitial.Attribute("harvestedPerAcr").Value),
+                HarvestedBushelsPerAcr = Convert.ToInt32(xInitial.Attribute("harvestedPerAcr").Value),
                 StarvedPeople = Convert.ToInt32(xInitial.Attribute("starvedPeople").Value)
             };
         }

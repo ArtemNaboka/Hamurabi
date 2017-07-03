@@ -5,7 +5,7 @@ namespace Hamurabi.Core.Objects
     public class CityDomain
     {
         public int BushelsCount { get; set; }
-        public int HarvestedBushelsCount { get; set; }
+        public int HarvestedBushelsPerAcr { get; set; }
         public int AcresCount { get; set; }
         public int AlivePeople { get; set; }
         public int ComingInCurrentYearPeople { get; set; }
@@ -26,7 +26,9 @@ namespace Hamurabi.Core.Objects
                 StarvedPeople = this.StarvedPeople,
                 EatenByRats = this.EatenByRats,
                 AcrCost = this.AcrCost,
-                AcresCount = this.AcresCount
+                AcresCount = this.AcresCount,
+                ComingInCurrentYearPeople = this.ComingInCurrentYearPeople,
+                HarvestedBushelsPerAcr = this.HarvestedBushelsPerAcr
             };
         }
     }
