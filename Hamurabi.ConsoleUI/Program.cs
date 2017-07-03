@@ -11,6 +11,7 @@ namespace Hamurabi.ConsoleUI
             Game game = new Game();
             game.Start();
             Console.WriteLine("GAME STARTED!");
+            Console.WriteLine(game.GetInitialReport());
 
             TurnResultModel result;
             do

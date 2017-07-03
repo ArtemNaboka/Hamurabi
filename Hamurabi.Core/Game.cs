@@ -29,6 +29,12 @@ namespace Hamurabi.Core
         }
 
 
+        public string GetInitialReport()
+        {
+            return _reporter.GetDomainInfo(_turnHandler.InitialDomain);
+        }
+
+
         public TurnResultModel MakeTurn(PlayerTurnModel model)
         {
             var handleResult = _turnHandler.HandleTurn(model);
