@@ -1,13 +1,24 @@
 ﻿using System;
 using System.Text;
+using Hamurabi.Core.Objects.Analysis.Abstract;
 using Hamurabi.Core.Objects.Models;
 using Hamurabi.Core.Objects.Reporters.Abstract;
 
 namespace Hamurabi.Core.Objects.Reporters
 {
+    // Класс, отвечающий за вывод состояния города
     public class DefaultReporter : IReporter
     {
         private readonly string _lineSeparator = Environment.NewLine;
+        private readonly IGameOverAnalyst _gameOverAnalyst;
+
+        private CityDomain _initialCityDomain;
+
+
+        public DefaultReporter(IGameOverAnalyst gameOverAnalyst)
+        {
+            _gameOverAnalyst = gameOverAnalyst;
+        }
 
 
         public string GenerateYearReport(HandleResult result)
@@ -17,17 +28,9 @@ namespace Hamurabi.Core.Objects.Reporters
             if (result.TurnHandleResult == TurnHandleResult.GameOver)
             {
                 reportSb
-                    .Append("Game over!!!")
-                    .Append(_lineSeparator);
+                    .Append(_gameOverAnalyst.MakeAnalysis(result.GameOverCause, _initialCityDomain, result.CityDomain));
 
-                if (AreAllPeopleStarved(result.CityDomain))
-                {
-                    reportSb
-                        .Append("You starved so much your people!!")
-                        .Append(_lineSeparator);
-
-                    return reportSb.ToString();
-                }
+                return reportSb.ToString();
             }
 
             reportSb.Append(GetDomainInfo(result.CityDomain));
@@ -46,8 +49,9 @@ namespace Hamurabi.Core.Objects.Reporters
                 .Append(_lineSeparator)
                 .Append($"I beg to report you about {domain.CurrentYear} year:{_lineSeparator}")
                 .Append(GetStarvedPeopleReport(domain.StarvedPeople))
-                .Append(GetPeopleComeToCityReport(domain.ComingInCurrentYearPeople))
+                .Append(GetPeopleComeToCityReport(domain.ComingInCurrentYearPeople))             
                 .Append(GetCityPopulationReport(domain.AlivePeople))
+                .Append(GetAcrsOwningReport(domain.AcresCount))
                 .Append(GetRatsReport(domain.EatenByRats))
                 .Append(GetHarvestedBushelsReport(domain.HarvestedBushelsPerAcr))
                 .Append(GetBushelsInStoreReport(domain.BushelsCount))
@@ -59,9 +63,13 @@ namespace Hamurabi.Core.Objects.Reporters
         }
 
 
-        private bool AreAllPeopleStarved(CityDomain cityDomain)
+        public string GetInitialDomainInfo()
         {
-            return cityDomain.AlivePeople <= cityDomain.StarvedPeople;
+            if (_initialCityDomain == null)
+            {
+                _initialCityDomain = XmlGameInitializer.GetInitialCityDomain();
+            }
+            return GetDomainInfo(_initialCityDomain);
         }
 
 
@@ -106,6 +114,12 @@ namespace Hamurabi.Core.Objects.Reporters
         private string GetLandCostReport(int bushelsPerAcr)
         {
             return $"Land is trading at {bushelsPerAcr} bushels per acre{_lineSeparator}";
+        }
+
+
+        private string GetAcrsOwningReport(int acrsCount)
+        {
+            return $"The city now owns {acrsCount} acres{_lineSeparator}";
         }
 
         #endregion
