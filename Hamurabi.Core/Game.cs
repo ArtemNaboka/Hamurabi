@@ -8,6 +8,7 @@ using Hamurabi.Core.Objects.Validators;
 
 namespace Hamurabi.Core
 {
+    // Класс, предоставляющий API для игры
     public class Game
     {
         private readonly ITurnHandler _turnHandler;

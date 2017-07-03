@@ -6,6 +6,7 @@ using Hamurabi.Core.Objects.Reporters.Abstract;
 
 namespace Hamurabi.Core.Objects.Reporters
 {
+    // Класс, отвечающий за вывод состояния города
     public class DefaultReporter : IReporter
     {
         private readonly string _lineSeparator = Environment.NewLine;

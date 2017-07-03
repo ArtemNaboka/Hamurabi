@@ -1,18 +1,20 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Hamurabi.Core.Objects
 {
-    public class CityDomain
+    // Владения города на текущий год
+    public class CityDomain : IComparable<CityDomain>
     {
-        public int BushelsCount { get; set; }
-        public int HarvestedBushelsPerAcr { get; set; }
-        public int AcresCount { get; set; }
-        public int AlivePeople { get; set; }
-        public int ComingInCurrentYearPeople { get; set; }
-        public int StarvedPeople { get; set; }
-        public int AcrCost { get; set; }
-        public int EatenByRats { get; set; }
-        public int CurrentYear { get; set; }
+        public int BushelsCount { get; set; }           // Кол-во бушелей
+        public int HarvestedBushelsPerAcr { get; set; }     // Кол-во собранных бушеле на один акр
+        public int AcresCount { get; set; }                 // Кол-во акров во владении города
+        public int AlivePeople { get; set; }                // Население города
+        public int ComingInCurrentYearPeople { get; set; }  // Кол-во пришедших в этом году людей
+        public int StarvedPeople { get; set; }              // Кол-во умерших от голода людей
+        public int AcrCost { get; set; }                    // Стоимость одного акра
+        public int EatenByRats { get; set; }                // Кол-во бушелей, съеденных крысами
+        public int CurrentYear { get; set; }                // Текущий год
 
 
         [SuppressMessage("ReSharper", "ArrangeThisQualifier")]
@@ -30,6 +32,11 @@ namespace Hamurabi.Core.Objects
                 ComingInCurrentYearPeople = this.ComingInCurrentYearPeople,
                 HarvestedBushelsPerAcr = this.HarvestedBushelsPerAcr
             };
+        }
+
+        public int CompareTo(CityDomain other)
+        {
+            return 1;
         }
     }
 }

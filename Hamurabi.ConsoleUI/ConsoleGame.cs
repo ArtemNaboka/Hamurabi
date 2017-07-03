@@ -4,6 +4,7 @@ using Hamurabi.Core.Objects.Models;
 
 namespace Hamurabi.ConsoleUI
 {
+    // Класс-оболочка для консольной версии игры
     public class ConsoleGame
     {
         private int _acrChange;

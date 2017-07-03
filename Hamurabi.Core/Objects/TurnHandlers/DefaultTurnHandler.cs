@@ -7,6 +7,7 @@ using Hamurabi.Core.Objects.Validators.Abstract;
 
 namespace Hamurabi.Core.Objects.TurnHandlers
 {
+    // Обработчик хода пользователя
     public class DefaultTurnHandler : ITurnHandler
     {
         private static readonly Random GameRandom = new Random();

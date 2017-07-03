@@ -4,6 +4,7 @@ using System.Xml.Linq;
 
 namespace Hamurabi.Core.Objects
 {
+    // Работа с настройками игры из xml
     public static class XmlGameInitializer
     {
         [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
