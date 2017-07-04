@@ -2,7 +2,7 @@
 <game>
   <options>
     <years>10</years>
-    <bushels norm="20" />
+    <bushels norm="20" toPlantAcr="1" />
   </options>
   
   <initial bushelsCount="2800" currentYear="1" harvestedBushels="0"
