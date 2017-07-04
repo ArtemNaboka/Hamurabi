@@ -12,6 +12,9 @@ namespace Hamurabi.Core.Objects.TurnHandlers
     {
         private static readonly Random GameRandom = new Random();
 
+        private const int OneBushelPerAcr = 1;
+        private const double ReductionRatsFactor = 0.4;
+
         private int _normFoodForPerson;
         private int _maxYears;
         private int _currentYear;
@@ -79,14 +82,14 @@ namespace Hamurabi.Core.Objects.TurnHandlers
             _cityDomain.BushelsCount -= model.AcresToPlant + model.BushelsToFeed;
             _cityDomain.HarvestedBushelsPerAcr = _cityDomain.BushelsCount < 3000
                                                 ? GameRandom.Next(1, 6)
-                                                : 1;
+                                                : OneBushelPerAcr;
 
             _cityDomain.BushelsCount += _cityDomain.HarvestedBushelsPerAcr * model.AcresToPlant;
 
             var eatenByRatsPercent = GameRandom.NextDouble();
 
             _cityDomain.EatenByRats = (int)(_cityDomain.BushelsCount * (eatenByRatsPercent >= 0.6
-                                                                        ? eatenByRatsPercent - 0.4
+                                                                        ? eatenByRatsPercent - ReductionRatsFactor
                                                                         : eatenByRatsPercent));
             _cityDomain.BushelsCount -= _cityDomain.EatenByRats;
 
