@@ -1,4 +1,5 @@
-﻿using Hamurabi.Core.Objects.Analysis;
+﻿using Hamurabi.Core.Objects;
+using Hamurabi.Core.Objects.Analysis;
 using Hamurabi.Core.Objects.Models;
 using Hamurabi.Core.Objects.Reporters;
 using Hamurabi.Core.Objects.Reporters.Abstract;
@@ -57,6 +58,12 @@ namespace Hamurabi.Core
             }
 
             return turnResult;
+        }
+
+
+        public SettingsModel GetGameSettings()
+        {
+            return XmlGameInitializer.GetGameSettings();
         }
     }
 }

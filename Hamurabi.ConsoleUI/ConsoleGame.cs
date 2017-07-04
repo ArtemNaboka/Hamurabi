@@ -14,12 +14,14 @@ namespace Hamurabi.ConsoleUI
         private bool _inputEntered;
 
         private Game _game;
+        private SettingsModel _settings;
 
         public bool IsGameOver { get; private set; }
 
         public void Start()
         {
             _game = new Game();
+            _settings = _game.GetGameSettings();
             _game.Start();
             Console.WriteLine("GAME STARTED!");
             Console.WriteLine(_game.GetInitialReport());
@@ -38,9 +40,9 @@ namespace Hamurabi.ConsoleUI
             {
                 Console.WriteLine("How many acres do you wish to buy or sell? (enter a negative amount to sell bushels)");
                 _acrChange = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("How many bushels do you wish to feed your people? (each citizen needs 20 bushels a year)");
+                Console.WriteLine($"How many bushels do you wish to feed your people? (each citizen needs {_settings.BushelsForPerson} bushels a year)");
                 _bushelsToFeed = Convert.ToInt32(Console.ReadLine());
-                Console.WriteLine("How many acres do you wish to plant with seed? (each acre takes one bushel)");
+                Console.WriteLine($"How many acres do you wish to plant with seed? (each acre takes {_settings.BushelsToPlantAcr} bushel)");
                 _acresToPlant = Convert.ToInt32(Console.ReadLine());
                 _inputEntered = true;
             }

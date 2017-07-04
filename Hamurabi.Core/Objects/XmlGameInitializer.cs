@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml.Linq;
+using Hamurabi.Core.Objects.Models;
 
 namespace Hamurabi.Core.Objects
 {
@@ -27,6 +28,20 @@ namespace Hamurabi.Core.Objects
             };
 
             return initialCityDomain;
+        }
+
+
+        [SuppressMessage("ReSharper", "PossibleNullReferenceException")]
+        public static SettingsModel GetGameSettings()
+        {
+            var xDoc = XDocument.Load(StringConstants.SettingsPath);
+            var xSettings = xDoc.Element("game").Element("options").Element("bushels");
+
+            return new SettingsModel
+            {
+                BushelsForPerson = Convert.ToInt32(xSettings.Attribute("norm").Value),
+                BushelsToPlantAcr = Convert.ToInt32(xSettings.Attribute("toPlantAcr").Value)
+            };
         }
     }
 }
