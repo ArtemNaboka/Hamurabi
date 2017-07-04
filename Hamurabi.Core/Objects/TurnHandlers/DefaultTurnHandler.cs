@@ -84,7 +84,7 @@ namespace Hamurabi.Core.Objects.TurnHandlers
             var eatenByRatsPercent = GameRandom.NextDouble();
 
             _cityDomain.EatenByRats = (int)(_cityDomain.BushelsCount * (eatenByRatsPercent >= 0.6
-                                                                        ? eatenByRatsPercent - 0.3
+                                                                        ? eatenByRatsPercent - 0.4
                                                                         : eatenByRatsPercent));
             _cityDomain.BushelsCount -= _cityDomain.EatenByRats;
 
