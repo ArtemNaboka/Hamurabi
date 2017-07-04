@@ -36,7 +36,20 @@ namespace Hamurabi.Core.Objects
 
         public int CompareTo(CityDomain other)
         {
-            return 1;
+            int thisDomainSum = GetDomainSum();
+            int otherDomainSum = other.GetDomainSum();
+
+            return Math.Abs(thisDomainSum - otherDomainSum) <= 0.5
+                    ? 0
+                    : thisDomainSum.CompareTo(otherDomainSum);
+        }
+
+
+        private int GetDomainSum()
+        {
+            int result = AcresCount / AlivePeople;
+
+            return result;
         }
     }
 }
