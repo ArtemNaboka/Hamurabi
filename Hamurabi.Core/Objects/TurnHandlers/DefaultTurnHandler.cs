@@ -12,6 +12,9 @@ namespace Hamurabi.Core.Objects.TurnHandlers
     {
         private static readonly Random GameRandom = new Random();
 
+        private const int OneBushelPerAcr = 1;
+        private const double ReductionRatsFactor = 0.4;
+
         private int _normFoodForPerson;
         private int _maxYears;
         private int _currentYear;
@@ -36,6 +39,7 @@ namespace Hamurabi.Core.Objects.TurnHandlers
 
         public HandleResult HandleTurn(PlayerTurnModel model)
         {
+            _cityDomain.BushelsCount -= model.AcrChange * _cityDomain.AcrCost;
             var validationResult = _validator.Validate(_cityDomain, model);
             if (validationResult.HasErrors)
             {
@@ -50,10 +54,12 @@ namespace Hamurabi.Core.Objects.TurnHandlers
             _currentYear = ++_cityDomain.CurrentYear;
             _cityDomain.AcresCount += model.AcrChange;
 
-            
+            var bushelsForPerson = model.BushelsToFeed / _normFoodForPerson;
+            var fedPeopleCount = bushelsForPerson > _cityDomain.AlivePeople
+                                                ? _cityDomain.AlivePeople
+                                                : bushelsForPerson;
 
-            var fedPeopleCount = model.BushelsToFeed / _normFoodForPerson;
-            _cityDomain.StarvedPeople = _cityDomain.AlivePeople - fedPeopleCount;          
+            _cityDomain.StarvedPeople = _cityDomain.AlivePeople - fedPeopleCount;
             _cityDomain.AlivePeople -= _cityDomain.StarvedPeople;
 
             if (_cityDomain.AlivePeople <= _cityDomain.StarvedPeople)
@@ -76,15 +82,14 @@ namespace Hamurabi.Core.Objects.TurnHandlers
             _cityDomain.BushelsCount -= model.AcresToPlant + model.BushelsToFeed;
             _cityDomain.HarvestedBushelsPerAcr = _cityDomain.BushelsCount < 3000
                                                 ? GameRandom.Next(1, 6)
-                                                : 1;
+                                                : OneBushelPerAcr;
 
-            _cityDomain.BushelsCount += _cityDomain.HarvestedBushelsPerAcr * model.AcresToPlant
-                                            - model.AcrChange * _cityDomain.AcrCost;
+            _cityDomain.BushelsCount += _cityDomain.HarvestedBushelsPerAcr * model.AcresToPlant;
 
             var eatenByRatsPercent = GameRandom.NextDouble();
 
             _cityDomain.EatenByRats = (int)(_cityDomain.BushelsCount * (eatenByRatsPercent >= 0.6
-                                                                        ? eatenByRatsPercent - 0.4
+                                                                        ? eatenByRatsPercent - ReductionRatsFactor
                                                                         : eatenByRatsPercent));
             _cityDomain.BushelsCount -= _cityDomain.EatenByRats;
 
