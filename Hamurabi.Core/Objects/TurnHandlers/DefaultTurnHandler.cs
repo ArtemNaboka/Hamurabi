@@ -36,6 +36,7 @@ namespace Hamurabi.Core.Objects.TurnHandlers
 
         public HandleResult HandleTurn(PlayerTurnModel model)
         {
+            _cityDomain.BushelsCount -= model.AcrChange * _cityDomain.AcrCost;
             var validationResult = _validator.Validate(_cityDomain, model);
             if (validationResult.HasErrors)
             {
@@ -50,10 +51,12 @@ namespace Hamurabi.Core.Objects.TurnHandlers
             _currentYear = ++_cityDomain.CurrentYear;
             _cityDomain.AcresCount += model.AcrChange;
 
-            
+            var bushelsForPerson = model.BushelsToFeed / _normFoodForPerson;
+            var fedPeopleCount = bushelsForPerson > _cityDomain.AlivePeople
+                                                ? _cityDomain.AlivePeople
+                                                : bushelsForPerson;
 
-            var fedPeopleCount = model.BushelsToFeed / _normFoodForPerson;
-            _cityDomain.StarvedPeople = _cityDomain.AlivePeople - fedPeopleCount;          
+            _cityDomain.StarvedPeople = _cityDomain.AlivePeople - fedPeopleCount;
             _cityDomain.AlivePeople -= _cityDomain.StarvedPeople;
 
             if (_cityDomain.AlivePeople <= _cityDomain.StarvedPeople)
@@ -78,8 +81,7 @@ namespace Hamurabi.Core.Objects.TurnHandlers
                                                 ? GameRandom.Next(1, 6)
                                                 : 1;
 
-            _cityDomain.BushelsCount += _cityDomain.HarvestedBushelsPerAcr * model.AcresToPlant
-                                            - model.AcrChange * _cityDomain.AcrCost;
+            _cityDomain.BushelsCount += _cityDomain.HarvestedBushelsPerAcr * model.AcresToPlant;
 
             var eatenByRatsPercent = GameRandom.NextDouble();
 
